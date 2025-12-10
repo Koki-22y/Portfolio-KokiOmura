@@ -1,0 +1,3 @@
+[submodule "時系列モデルのトレーニングとTimeSHAPによる説明の可視化"]
+	path = 時系列モデルのトレーニングとTimeSHAPによる説明の可視化
+	url = https://github.com/Koki-22y/timeshap-modified-timeseries-visualisation.git
