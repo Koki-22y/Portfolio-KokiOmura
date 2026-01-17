@@ -12,10 +12,11 @@
         }
 
         body {
-            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
             background: #1a1a2e;
             color: #eee;
             overflow: hidden;
+            line-height: 1.6;
         }
 
         .slide-container {
@@ -32,11 +33,11 @@
             width: 90%;
             max-width: 1200px;
             min-height: 80vh;
-            padding: 60px;
+            max-height: 95vh;
+            padding: 50px;
             background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
             border-radius: 20px;
             box-shadow: 0 25px 80px rgba(0,0,0,0.5);
-            animation: fadeIn 0.5s ease;
             overflow-y: auto;
         }
 
@@ -44,69 +45,54 @@
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         h1 {
-            font-size: 2.8em;
-            margin-bottom: 30px;
-            background: linear-gradient(90deg, #e94560, #0f3460);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            color: #e94560;
         }
 
         h2 {
-            font-size: 2.2em;
-            margin-bottom: 25px;
+            font-size: 2em;
+            margin-bottom: 20px;
             color: #e94560;
             border-bottom: 3px solid #e94560;
-            padding-bottom: 15px;
+            padding-bottom: 12px;
         }
 
         h3 {
-            font-size: 1.6em;
-            margin: 25px 0 15px;
+            font-size: 1.4em;
+            margin: 20px 0 12px;
             color: #00d9ff;
         }
 
         p {
-            font-size: 1.3em;
+            font-size: 1.2em;
             line-height: 1.8;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: #ccc;
         }
 
         ul {
-            margin: 20px 0 20px 40px;
-            font-size: 1.2em;
-            line-height: 2;
+            margin: 15px 0 15px 35px;
+            font-size: 1.1em;
+            line-height: 1.9;
         }
 
         li {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #bbb;
         }
 
-        li::marker {
-            color: #e94560;
-        }
-
         .highlight {
-            background: linear-gradient(90deg, #e94560, #ff6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #e94560;
             font-weight: bold;
         }
 
         .box {
             background: rgba(233, 69, 96, 0.1);
             border-left: 5px solid #e94560;
-            padding: 25px;
-            margin: 25px 0;
+            padding: 20px;
+            margin: 20px 0;
             border-radius: 0 10px 10px 0;
         }
 
@@ -121,15 +107,17 @@
         }
 
         .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin: 30px 0;
+            display: flex;
+            gap: 25px;
+            margin: 25px 0;
+            flex-wrap: wrap;
         }
 
         .comparison > div {
-            padding: 25px;
-            border-radius: 15px;
+            flex: 1;
+            min-width: 280px;
+            padding: 20px;
+            border-radius: 12px;
         }
 
         .before {
@@ -142,17 +130,23 @@
             border: 2px solid #00ff88;
         }
 
+        .tcrei-container {
+            text-align: center;
+            margin: 25px 0;
+        }
+
         .tcrei-box {
             display: inline-block;
-            padding: 15px 30px;
-            margin: 10px;
-            border-radius: 50px;
-            font-size: 1.2em;
+            padding: 12px 25px;
+            margin: 8px;
+            border-radius: 40px;
+            font-size: 1.1em;
             font-weight: bold;
+            color: #fff;
         }
 
         .t-box { background: linear-gradient(135deg, #e94560, #ff6b6b); }
-        .c-box { background: linear-gradient(135deg, #0f3460, #16213e); border: 2px solid #00d9ff; }
+        .c-box { background: #0f3460; border: 2px solid #00d9ff; }
         .r-box { background: linear-gradient(135deg, #00d9ff, #00a8cc); color: #1a1a2e; }
         .e-box { background: linear-gradient(135deg, #00ff88, #00cc6a); color: #1a1a2e; }
         .i-box { background: linear-gradient(135deg, #ffd93d, #ff9f1c); color: #1a1a2e; }
@@ -163,16 +157,12 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            min-height: 70vh;
         }
 
         .title-slide h1 {
-            font-size: 3.5em;
-            margin-bottom: 30px;
-        }
-
-        .title-slide p {
-            font-size: 1.5em;
-            color: #888;
+            font-size: 3em;
+            margin-bottom: 25px;
         }
 
         .section-title {
@@ -181,44 +171,48 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            min-height: 70vh;
+            position: relative;
         }
 
         .section-title h2 {
-            font-size: 2.8em;
+            font-size: 2.5em;
             border: none;
-            background: linear-gradient(90deg, #e94560, #00d9ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #00d9ff;
         }
 
         .section-number {
-            font-size: 8em;
+            font-size: 6em;
             font-weight: bold;
-            opacity: 0.2;
+            opacity: 0.15;
             position: absolute;
-            top: 20px;
-            right: 40px;
+            top: 10px;
+            right: 30px;
+            color: #e94560;
         }
 
         .nav {
             position: fixed;
-            bottom: 30px;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 20px;
+            gap: 15px;
             z-index: 100;
         }
 
         .nav button {
-            padding: 15px 40px;
-            font-size: 1.1em;
+            padding: 12px 35px;
+            font-size: 1em;
             border: none;
-            border-radius: 50px;
+            border-radius: 40px;
             cursor: pointer;
-            transition: all 0.3s;
             font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav button:hover {
+            transform: scale(1.05);
         }
 
         .nav .prev {
@@ -231,16 +225,11 @@
             color: #fff;
         }
 
-        .nav button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
-        }
-
         .progress {
             position: fixed;
             top: 0;
             left: 0;
-            height: 5px;
+            height: 4px;
             background: linear-gradient(90deg, #e94560, #00d9ff);
             transition: width 0.3s;
             z-index: 100;
@@ -249,89 +238,95 @@
         .slide-number {
             position: fixed;
             bottom: 30px;
-            right: 40px;
-            font-size: 1.2em;
+            right: 35px;
+            font-size: 1.1em;
             color: #666;
         }
 
         .emoji {
-            font-size: 4em;
-            margin: 20px 0;
+            font-size: 3em;
+            margin: 15px 0;
         }
 
         .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 30px 0;
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
         }
 
         .grid-3 > div {
+            flex: 1;
+            min-width: 200px;
             background: rgba(255,255,255,0.05);
-            padding: 25px;
-            border-radius: 15px;
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
         }
 
         .warning {
             background: rgba(255, 193, 7, 0.15);
             border: 2px solid #ffc107;
-            padding: 20px;
+            padding: 18px;
             border-radius: 10px;
-            margin: 20px 0;
+            margin: 18px 0;
         }
 
         .code-block {
             background: #0d1117;
-            padding: 20px;
+            padding: 18px;
             border-radius: 10px;
-            font-family: 'Consolas', monospace;
-            margin: 20px 0;
+            font-family: "Consolas", "Monaco", monospace;
+            margin: 18px 0;
             overflow-x: auto;
+            font-size: 1.1em;
         }
 
         .tag {
             display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            margin: 5px;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin: 4px;
         }
 
-        .tag-red { background: #e94560; }
+        .tag-red { background: #e94560; color: #fff; }
         .tag-blue { background: #00d9ff; color: #1a1a2e; }
         .tag-green { background: #00ff88; color: #1a1a2e; }
 
         .big-number {
-            font-size: 5em;
+            font-size: 4em;
             font-weight: bold;
-            background: linear-gradient(90deg, #e94560, #00d9ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #e94560;
         }
 
         .mw-box {
             background: linear-gradient(135deg, #4a0080, #7b2cbf);
-            padding: 30px;
-            border-radius: 15px;
-            margin: 30px 0;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
             text-align: center;
         }
 
         .mw-box h3 {
             color: #fff;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+        }
+
+        .mw-box h2 {
+            color: #fff;
+            border: none;
+            margin-bottom: 10px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 18px 0;
         }
 
         th, td {
-            padding: 15px;
+            padding: 12px;
             text-align: left;
             border-bottom: 1px solid #333;
         }
@@ -345,31 +340,44 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
+            gap: 12px;
+            margin: 25px 0;
             flex-wrap: wrap;
         }
 
         .flow-item {
             background: rgba(255,255,255,0.1);
-            padding: 20px 30px;
+            padding: 15px 25px;
             border-radius: 10px;
             text-align: center;
         }
 
         .flow-arrow {
-            font-size: 2em;
+            font-size: 1.8em;
             color: #e94560;
+        }
+
+        .vertical-flow {
+            flex-direction: column;
+        }
+
+        .vertical-flow .flow-item {
+            width: 70%;
+        }
+
+        .vertical-flow .flow-arrow {
+            transform: rotate(90deg);
         }
 
         @media (max-width: 768px) {
             .slide {
-                padding: 30px;
+                padding: 25px;
             }
-            h1 { font-size: 2em; }
-            h2 { font-size: 1.6em; }
-            .comparison { grid-template-columns: 1fr; }
-            .grid-3 { grid-template-columns: 1fr; }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.5em; }
+            .comparison { flex-direction: column; }
+            .grid-3 { flex-direction: column; }
+            .nav button { padding: 10px 25px; }
         }
     </style>
 </head>
@@ -379,14 +387,14 @@
 
     <div class="slide-container">
         <!-- Slide 1: Title -->
-        <div class="slide title-slide active" data-slide="1">
+        <div class="slide title-slide active">
             <h1>AIを監督する力を身につける</h1>
             <p>対話設計能力と品質管理能力の習得</p>
-            <p style="margin-top: 40px; color: #666;">AIプロンプト品質研修</p>
+            <p style="margin-top: 35px; color: #666;">AIプロンプト品質研修</p>
         </div>
 
         <!-- Slide 2 -->
-        <div class="slide" data-slide="2">
+        <div class="slide">
             <h2>研修の背景</h2>
             <p>生成AIを<span class="highlight">「うまく使いこなす」</span>とは？</p>
             <div class="box">
@@ -400,7 +408,7 @@
         </div>
 
         <!-- Slide 3 -->
-        <div class="slide" data-slide="3">
+        <div class="slide">
             <h2>研修の目標</h2>
             <div class="grid-3">
                 <div>
@@ -422,41 +430,41 @@
         </div>
 
         <!-- Slide 4 -->
-        <div class="slide" data-slide="4">
+        <div class="slide">
             <h2>研修の全体像</h2>
             <div class="comparison">
-                <div style="background: rgba(233,69,96,0.1); padding: 30px; border-radius: 15px;">
+                <div style="background: rgba(233,69,96,0.1); padding: 25px; border-radius: 12px; text-align: center;">
                     <h3>講義</h3>
                     <div class="big-number">6時間</div>
                     <p>理論＋ミニワークショップ</p>
                 </div>
-                <div style="background: rgba(0,217,255,0.1); padding: 30px; border-radius: 15px;">
+                <div style="background: rgba(0,217,255,0.1); padding: 25px; border-radius: 12px; text-align: center;">
                     <h3>ワークショップ</h3>
-                    <div class="big-number">6時間</div>
+                    <div class="big-number" style="color: #00d9ff;">6時間</div>
                     <p>実践・アウトプット中心</p>
                 </div>
             </div>
-            <p style="text-align: center; margin-top: 30px;">計12時間 / 2日間構成 / ゲーム性を取り入れた演習</p>
+            <p style="text-align: center; margin-top: 25px;">計12時間 / 2日間構成 / ゲーム性を取り入れた演習</p>
         </div>
 
         <!-- Slide 5 -->
-        <div class="slide" data-slide="5">
+        <div class="slide">
             <h2>TCREIフレームワーク</h2>
             <p>Google Prompt Engineering courseのテクニック</p>
-            <div style="text-align: center; margin: 40px 0;">
-                <div class="tcrei-box t-box">T: Task</div>
-                <div class="tcrei-box c-box">C: Context</div>
-                <div class="tcrei-box r-box">R: References</div>
-                <div class="tcrei-box e-box">E: Evaluation</div>
-                <div class="tcrei-box i-box">I: Iteration</div>
+            <div class="tcrei-container">
+                <span class="tcrei-box t-box">T: Task</span>
+                <span class="tcrei-box c-box">C: Context</span>
+                <span class="tcrei-box r-box">R: References</span>
+                <span class="tcrei-box e-box">E: Evaluation</span>
+                <span class="tcrei-box i-box">I: Iteration</span>
             </div>
-            <div class="box-blue box">
+            <div class="box box-blue">
                 <p>覚え方：<strong>「タ・ブン・サン・ヒョウ・ク」</strong> → 「多分、三票、来る」</p>
             </div>
         </div>
 
         <!-- Slide 6 -->
-        <div class="slide" data-slide="6">
+        <div class="slide">
             <h2>研修の3部構成</h2>
             <div class="flow-chart">
                 <div class="flow-item" style="border: 3px solid #e94560;">
@@ -464,13 +472,13 @@
                     <p>思考の整理法</p>
                     <span class="tag tag-red">TCR</span>
                 </div>
-                <div class="flow-arrow">→</div>
+                <span class="flow-arrow">→</span>
                 <div class="flow-item" style="border: 3px solid #00ff88;">
                     <h3>中盤</h3>
                     <p>評価と検証</p>
                     <span class="tag tag-green">E</span>
                 </div>
-                <div class="flow-arrow">→</div>
+                <span class="flow-arrow">→</span>
                 <div class="flow-item" style="border: 3px solid #ffd93d;">
                     <h3>後半</h3>
                     <p>仕組みと編集</p>
@@ -480,18 +488,18 @@
         </div>
 
         <!-- Slide 7: Section Title -->
-        <div class="slide section-title" data-slide="7">
+        <div class="slide section-title">
             <span class="section-number">01</span>
             <h2>第1部：導入＋構造化・MECE</h2>
             <p>90分</p>
         </div>
 
         <!-- Slide 8 -->
-        <div class="slide" data-slide="8">
+        <div class="slide">
             <h2>MECEとは？</h2>
             <div class="box">
                 <h3>Mutually Exclusive, Collectively Exhaustive</h3>
-                <p style="font-size: 1.5em; text-align: center; margin: 20px 0;">
+                <p style="font-size: 1.4em; text-align: center; margin: 15px 0;">
                     <span class="highlight">「漏れなく、ダブりなく」</span>
                 </p>
             </div>
@@ -504,22 +512,22 @@
         </div>
 
         <!-- Slide 9 -->
-        <div class="slide" data-slide="9">
+        <div class="slide">
             <h2>構造化とは？</h2>
-            <div class="box-blue box">
+            <div class="box box-blue">
                 <p>料理に例えると：</p>
                 <h3>「何を作るかに向けて、材料・工程を整理すること」</h3>
             </div>
-            <p style="margin-top: 30px; text-align: center; font-size: 1.4em;">
+            <p style="margin-top: 25px; text-align: center; font-size: 1.3em;">
                 曖昧な指示 → 焦点の定まらない結果
             </p>
         </div>
 
         <!-- Slide 10 -->
-        <div class="slide" data-slide="10">
+        <div class="slide">
             <h2>構造化されていない例 <span style="color: #ff5252;">Before</span></h2>
-            <div class="before" style="padding: 30px; margin: 30px 0;">
-                <p style="font-size: 2em; text-align: center;">「なんか美味しいもの作って」</p>
+            <div class="before" style="padding: 25px; margin: 25px 0; text-align: center;">
+                <p style="font-size: 1.8em;">「なんか美味しいもの作って」</p>
             </div>
             <ul>
                 <li><strong>目的：</strong>不明（誰が食べる？いつ？）</li>
@@ -532,11 +540,11 @@
         </div>
 
         <!-- Slide 11 -->
-        <div class="slide" data-slide="11">
+        <div class="slide">
             <h2>構造化された例 <span style="color: #00ff88;">After</span> - 目的設定</h2>
-            <div class="after" style="padding: 30px; margin: 30px 0;">
+            <div class="after" style="padding: 25px; margin: 25px 0;">
                 <h3>Step 1: 目的（タスク）を決める</h3>
-                <p style="font-size: 1.5em; text-align: center; margin-top: 20px;">
+                <p style="font-size: 1.4em; text-align: center; margin-top: 15px;">
                     「平日の夜に、30分以内で作れる2人分の夕食」
                 </p>
             </div>
@@ -544,7 +552,7 @@
         </div>
 
         <!-- Slide 12 -->
-        <div class="slide" data-slide="12">
+        <div class="slide">
             <h2>構造化された例 - 文脈・制約整理</h2>
             <h3>Step 2: 文脈・制約を整理する</h3>
             <table>
@@ -557,7 +565,7 @@
         </div>
 
         <!-- Slide 13 -->
-        <div class="slide" data-slide="13">
+        <div class="slide">
             <h2>構造化された例 - 要素分解</h2>
             <h3>Step 3: 要素に分解する</h3>
             <div class="grid-3">
@@ -577,7 +585,7 @@
         </div>
 
         <!-- Slide 14 -->
-        <div class="slide" data-slide="14">
+        <div class="slide">
             <h2>構造化された例 - 判断・改善</h2>
             <h3>Step 4: 判断・改善する</h3>
             <div class="comparison">
@@ -596,14 +604,14 @@
                     </ul>
                 </div>
             </div>
-            <p style="text-align: center; margin-top: 20px;">構造化により改善点が見える！</p>
+            <p style="text-align: center; margin-top: 15px;">構造化により改善点が見える！</p>
         </div>
 
         <!-- Slide 15: MW -->
-        <div class="slide" data-slide="15">
+        <div class="slide">
             <div class="mw-box">
                 <h3>MW① ミニワークショップ</h3>
-                <h2 style="color: #fff;">「今晩何食べる？」</h2>
+                <h2>「今晩何食べる？」</h2>
                 <p style="color: #ddd;">15分間</p>
             </div>
             <ul>
@@ -614,28 +622,28 @@
         </div>
 
         <!-- Slide 16 -->
-        <div class="slide" data-slide="16">
+        <div class="slide">
             <h2>フェルミ推定でTCR思考を学ぶ</h2>
-            <div class="box-blue box">
+            <div class="box box-blue">
                 <p>フェルミ推定ができると <span class="highlight">TCR の整理</span> ができる</p>
                 <p>LLMとの対話においても有益</p>
             </div>
         </div>
 
         <!-- Slide 17 -->
-        <div class="slide" data-slide="17">
+        <div class="slide">
             <h2>フェルミ推定の例題</h2>
             <div class="box" style="text-align: center;">
-                <p style="font-size: 2em;">「日本にある電柱の数は？」</p>
+                <p style="font-size: 1.8em;">「日本にある電柱の数は？」</p>
             </div>
             <h3>目的</h3>
             <p>日本にある電柱の数を推定する</p>
         </div>
 
         <!-- Slide 18 -->
-        <div class="slide" data-slide="18">
+        <div class="slide">
             <h2>アプローチの設定</h2>
-            <div class="box-green box">
+            <div class="box box-green">
                 <p>日本の面積 × 1km²あたりの電柱数</p>
             </div>
             <h3>要素の洗い出し</h3>
@@ -646,7 +654,7 @@
         </div>
 
         <!-- Slide 19 -->
-        <div class="slide" data-slide="19">
+        <div class="slide">
             <h2>必要な要素の収集</h2>
             <table>
                 <tr><th>項目</th><th>数値</th></tr>
@@ -658,17 +666,17 @@
         </div>
 
         <!-- Slide 20 -->
-        <div class="slide" data-slide="20">
+        <div class="slide">
             <h2>計算と結果</h2>
             <div class="code-block">
                 <p>都市本数 = 38,000 × 1,000 × 1,000 ÷ 2,500 = <strong>15,200,000本</strong></p>
                 <p>田舎本数 = 342,000 × 1,000 × 1,000 ÷ 22,500 = <strong>15,200,000本</strong></p>
-                <p style="margin-top: 20px; font-size: 1.3em;">合計 = <span style="color: #00ff88;">約30,400,000本</span></p>
+                <p style="margin-top: 15px; font-size: 1.2em;">合計 = <span style="color: #00ff88;">約30,400,000本</span></p>
             </div>
         </div>
 
         <!-- Slide 21 -->
-        <div class="slide" data-slide="21">
+        <div class="slide">
             <h2>フェルミ推定 = TCRの整理</h2>
             <div class="grid-3">
                 <div style="border: 2px solid #e94560;">
@@ -684,35 +692,35 @@
                     <p>密度の仮定を設定</p>
                 </div>
             </div>
-            <p style="text-align: center; margin-top: 30px;">気づかないうちにTCRの整理を行っている！</p>
+            <p style="text-align: center; margin-top: 25px;">気づかないうちにTCRの整理を行っている！</p>
         </div>
 
         <!-- Slide 22: Section Title -->
-        <div class="slide section-title" data-slide="22">
+        <div class="slide section-title">
             <span class="section-number">02</span>
             <h2>第2部：プロンプト分解と出力評価</h2>
             <p>90分</p>
         </div>
 
         <!-- Slide 23 -->
-        <div class="slide" data-slide="23">
+        <div class="slide">
             <h2>TCREIフレームワーク詳細</h2>
             <p>Google Prompt Engineeringコースのテクニック</p>
-            <div style="text-align: center; margin: 30px 0;">
-                <div class="tcrei-box t-box">T: タスク</div>
-                <div class="tcrei-box c-box">C: 文脈</div>
-                <div class="tcrei-box r-box">R: 参照</div>
-                <div class="tcrei-box e-box">E: 評価</div>
-                <div class="tcrei-box i-box">I: 繰り返し</div>
+            <div class="tcrei-container">
+                <span class="tcrei-box t-box">T: タスク</span>
+                <span class="tcrei-box c-box">C: 文脈</span>
+                <span class="tcrei-box r-box">R: 参照</span>
+                <span class="tcrei-box e-box">E: 評価</span>
+                <span class="tcrei-box i-box">I: 繰り返し</span>
             </div>
             <div class="box">
                 <p>覚え方：<strong>「タ・ブン・サン・ヒョウ・ク」</strong></p>
-                <p style="text-align: center; font-size: 1.5em;">→ 「多分、三票、来る」</p>
+                <p style="text-align: center; font-size: 1.4em;">→ 「多分、三票、来る」</p>
             </div>
         </div>
 
         <!-- Slide 24 -->
-        <div class="slide" data-slide="24">
+        <div class="slide">
             <h2>T - Task（タスク）</h2>
             <div class="box">
                 <p>「何をAIにしてほしいか」を<span class="highlight">精密に言語化</span>する</p>
@@ -729,7 +737,7 @@
         </div>
 
         <!-- Slide 25 -->
-        <div class="slide" data-slide="25">
+        <div class="slide">
             <h2>Task の良い例・悪い例</h2>
             <div class="comparison">
                 <div class="before">
@@ -744,9 +752,9 @@
         </div>
 
         <!-- Slide 26 -->
-        <div class="slide" data-slide="26">
+        <div class="slide">
             <h2>C - Context（文脈）</h2>
-            <div class="box-blue box">
+            <div class="box box-blue">
                 <p>必要不可欠な<span class="highlight">足場（コンテキスト）</span>を提供する</p>
             </div>
             <ul>
@@ -758,10 +766,10 @@
         </div>
 
         <!-- Slide 27 -->
-        <div class="slide" data-slide="27">
+        <div class="slide">
             <h2>Context の例</h2>
-            <div class="box-green box">
-                <p style="font-size: 1.1em;">「<strong>経験豊富な法務顧問</strong>というペルソナを想定し、革新的な機械学習アルゴリズムを立ち上げる<strong>SaaSスタートアップ</strong>における主要な知的財産上の検討事項を整理したメモランダムを作成せよ」</p>
+            <div class="box box-green">
+                <p style="font-size: 1.05em;">「<strong>経験豊富な法務顧問</strong>というペルソナを想定し、革新的な機械学習アルゴリズムを立ち上げる<strong>SaaSスタートアップ</strong>における主要な知的財産上の検討事項を整理したメモランダムを作成せよ」</p>
             </div>
             <ul>
                 <li><span class="tag tag-red">ペルソナ</span> 経験豊富な法務顧問</li>
@@ -771,7 +779,7 @@
         </div>
 
         <!-- Slide 28 -->
-        <div class="slide" data-slide="28">
+        <div class="slide">
             <h2>R - References（参照）</h2>
             <div class="box">
                 <p><span class="highlight">具体例と制約条件</span>を与える</p>
@@ -785,16 +793,16 @@
         </div>
 
         <!-- Slide 29 -->
-        <div class="slide" data-slide="29">
+        <div class="slide">
             <h2>E - Evaluation（評価）</h2>
-            <div class="box-green box">
+            <div class="box box-green">
                 <p>AIの応答を受け取った後の<span class="highlight">厳密な評価</span></p>
                 <p>単なる受容ではなく、綿密な分析と吟味</p>
             </div>
         </div>
 
         <!-- Slide 30 -->
-        <div class="slide" data-slide="30">
+        <div class="slide">
             <h2>評価の3つの確認ポイント</h2>
             <div class="grid-3">
                 <div style="border: 2px solid #e94560;">
@@ -813,22 +821,22 @@
         </div>
 
         <!-- Slide 31 -->
-        <div class="slide" data-slide="31">
+        <div class="slide">
             <h2>I - Iteration（反復）</h2>
             <div class="box" style="text-align: center;">
-                <p style="font-size: 1.5em;">評価結果を踏まえ、プロンプトを<span class="highlight">改良</span>する</p>
+                <p style="font-size: 1.4em;">評価結果を踏まえ、プロンプトを<span class="highlight">改良</span>する</p>
             </div>
-            <div class="box-blue box">
+            <div class="box box-blue">
                 <p>反復こそが、最適なプロンプトを鍛え上げる<strong>炉</strong>である</p>
             </div>
-            <p style="margin-top: 20px;">タスク定義、文脈提示、参照情報における<strong>わずかな調整</strong>が、AI出力の質を大きく向上させることがある</p>
+            <p style="margin-top: 15px;">タスク定義、文脈提示、参照情報における<strong>わずかな調整</strong>が、AI出力の質を大きく向上させることがある</p>
         </div>
 
         <!-- Slide 32: MW -->
-        <div class="slide" data-slide="32">
+        <div class="slide">
             <div class="mw-box">
                 <h3>MW② ミニワークショップ</h3>
-                <h2 style="color: #fff;">「TCR評価・作成」</h2>
+                <h2>「TCR評価・作成」</h2>
                 <p style="color: #ddd;">15分間</p>
             </div>
             <h3>選択肢</h3>
@@ -839,28 +847,28 @@
         </div>
 
         <!-- Slide 33: Section Title -->
-        <div class="slide section-title" data-slide="33">
+        <div class="slide section-title">
             <span class="section-number">03</span>
             <h2>第3部：ハルシネーションと検証判断</h2>
             <p>90分</p>
         </div>
 
         <!-- Slide 34 -->
-        <div class="slide" data-slide="34">
+        <div class="slide">
             <h2>ハルシネーションとは？</h2>
             <div class="box">
                 <p>AIが<span class="highlight">事実ではない情報</span>をもっともらしく生成する現象</p>
             </div>
-            <div class="box-blue box">
+            <div class="box box-blue">
                 <p>LLMは統計的な確率に基づいて<br>「<strong>次の言葉を予測している</strong>」だけ</p>
             </div>
         </div>
 
         <!-- Slide 35 -->
-        <div class="slide" data-slide="35">
+        <div class="slide">
             <h2>ハルシネーションの有名な例</h2>
             <div class="box" style="text-align: center;">
-                <p style="font-size: 1.8em;">「Strawberry」の中に<br>「r」はいくつある？</p>
+                <p style="font-size: 1.6em;">「Strawberry」の中に<br>「r」はいくつある？</p>
             </div>
             <div class="warning">
                 <p>ChatGPTが正しく数えられない有名な例</p>
@@ -869,7 +877,7 @@
         </div>
 
         <!-- Slide 36 -->
-        <div class="slide" data-slide="36">
+        <div class="slide">
             <h2>ハルシネーションチェックが必要な状況①</h2>
             <ul>
                 <li><strong>回答の事実性が重要な場合</strong>
@@ -880,13 +888,13 @@
                 </li>
                 <li><strong>最新の情報が求められる場合</strong></li>
             </ul>
-            <div class="box-green box">
+            <div class="box box-green">
                 <p>これらは使用用途の性質上、正確性を要する</p>
             </div>
         </div>
 
         <!-- Slide 37 -->
-        <div class="slide" data-slide="37">
+        <div class="slide">
             <h2>ハルシネーションチェックが必要な状況②</h2>
             <ul>
                 <li><strong>簡単にググって出てこないニッチな内容</strong>
@@ -899,7 +907,7 @@
         </div>
 
         <!-- Slide 38 -->
-        <div class="slide" data-slide="38">
+        <div class="slide">
             <h2>ハルシネーションチェックが必要な状況③</h2>
             <ul>
                 <li><strong>歴史的事実など解釈が分かれる分野</strong>
@@ -912,15 +920,15 @@
         </div>
 
         <!-- Slide 39 -->
-        <div class="slide" data-slide="39">
+        <div class="slide">
             <h2>事実と意見を区別する</h2>
             <div class="comparison">
-                <div style="background: rgba(0,217,255,0.15); border: 2px solid #00d9ff; padding: 25px; border-radius: 15px;">
+                <div style="background: rgba(0,217,255,0.15); border: 2px solid #00d9ff; padding: 20px; border-radius: 12px;">
                     <h3>事実</h3>
                     <p>エビデンスをもって証明できる</p>
                     <p>普遍的で議論の余地がない</p>
                 </div>
-                <div style="background: rgba(255,193,7,0.15); border: 2px solid #ffc107; padding: 25px; border-radius: 15px;">
+                <div style="background: rgba(255,193,7,0.15); border: 2px solid #ffc107; padding: 20px; border-radius: 12px;">
                     <h3>意見</h3>
                     <p>「正しい」も「間違い」もない</p>
                     <p>信条・態度・価値観・感情の表現</p>
@@ -929,43 +937,43 @@
         </div>
 
         <!-- Slide 40 -->
-        <div class="slide" data-slide="40">
+        <div class="slide">
             <h2>事実と意見の例</h2>
             <div class="comparison">
                 <div class="after">
                     <h3>事実</h3>
-                    <p style="font-size: 1.3em;">「犬は哺乳類である」</p>
+                    <p style="font-size: 1.2em;">「犬は哺乳類である」</p>
                     <p>→ 議論の余地なし</p>
                 </div>
                 <div class="before">
                     <h3>意見</h3>
-                    <p style="font-size: 1.3em;">「第二次世界大戦はひどいものだった」</p>
+                    <p style="font-size: 1.2em;">「第二次世界大戦はひどいものだった」</p>
                     <p>→ 何をもって「ひどい」とするか不明瞭</p>
                 </div>
             </div>
         </div>
 
         <!-- Slide 41 -->
-        <div class="slide" data-slide="41">
+        <div class="slide">
             <h2>言葉のバイアスに注意</h2>
             <div class="box">
-                <p style="font-size: 1.3em;">「AIは人間の仕事を<strong>なくす</strong>危険な存在だ」</p>
+                <p style="font-size: 1.2em;">「AIは人間の仕事を<strong>なくす</strong>危険な存在だ」</p>
             </div>
             <ul>
                 <li>100の仕事のうち1がAIに代替</li>
                 <li>→「奪う」は正しい表現か？</li>
                 <li>→「なくす」は100が0になるように聞こえる</li>
             </ul>
-            <div class="box-green box">
+            <div class="box box-green">
                 <p>言葉の持つバイアスを識別する力を身につけよう！</p>
             </div>
         </div>
 
         <!-- Slide 42: MW -->
-        <div class="slide" data-slide="42">
+        <div class="slide">
             <div class="mw-box">
                 <h3>MW③ ミニワークショップ</h3>
-                <h2 style="color: #fff;">Kahoot + 3分ファクトチェック</h2>
+                <h2>Kahoot + 3分ファクトチェック</h2>
                 <p style="color: #ddd;">15分間</p>
             </div>
             <ul>
@@ -975,7 +983,7 @@
         </div>
 
         <!-- Slide 43 -->
-        <div class="slide" data-slide="43">
+        <div class="slide">
             <h2>ファクトチェック・スプリント</h2>
             <div class="flow-chart">
                 <div class="flow-item">
@@ -983,13 +991,13 @@
                     <p>個人判断</p>
                     <span class="tag tag-red">5分</span>
                 </div>
-                <div class="flow-arrow">→</div>
+                <span class="flow-arrow">→</span>
                 <div class="flow-item">
                     <h3>Phase 2</h3>
                     <p>超短時間検証</p>
                     <span class="tag tag-blue">10分</span>
                 </div>
-                <div class="flow-arrow">→</div>
+                <span class="flow-arrow">→</span>
                 <div class="flow-item">
                     <h3>Phase 3</h3>
                     <p>共有と解説</p>
@@ -999,12 +1007,12 @@
         </div>
 
         <!-- Slide 44 -->
-        <div class="slide" data-slide="44">
+        <div class="slide">
             <h2>ファクトチェックの例題</h2>
             <div class="box">
                 <p>「オンライン教育は対面授業より学習効果が高い」</p>
             </div>
-            <div class="box-blue box">
+            <div class="box box-blue">
                 <p>「モンテッソーリ教育に効果はない」</p>
             </div>
             <h3>検証のポイント</h3>
@@ -1016,10 +1024,10 @@
         </div>
 
         <!-- Slide 45 -->
-        <div class="slide" data-slide="45">
+        <div class="slide">
             <h2>検証の心構え</h2>
-            <div class="box-green box">
-                <p style="font-size: 1.3em;">検証は情報の確度を<strong>100に近づける</strong>作業であって<br><strong>100にする</strong>作業ではない</p>
+            <div class="box box-green">
+                <p style="font-size: 1.2em;">検証は情報の確度を<strong>100に近づける</strong>作業であって<br><strong>100にする</strong>作業ではない</p>
             </div>
             <ul>
                 <li>「結論を保留する」判断も成果</li>
@@ -1028,14 +1036,14 @@
         </div>
 
         <!-- Slide 46: Section Title -->
-        <div class="slide section-title" data-slide="46">
+        <div class="slide section-title">
             <span class="section-number">04</span>
             <h2>第4部：LLMの限界理解と編集スキル</h2>
             <p>90分</p>
         </div>
 
         <!-- Slide 47 -->
-        <div class="slide" data-slide="47">
+        <div class="slide">
             <h2>コンテキストウィンドウとは？</h2>
             <div class="box">
                 <p>過去の会話で交換した情報を<span class="highlight">保持できる範囲</span></p>
@@ -1048,9 +1056,9 @@
         </div>
 
         <!-- Slide 48 -->
-        <div class="slide" data-slide="48">
+        <div class="slide">
             <h2>トークンとは？</h2>
-            <div class="box-blue box">
+            <div class="box box-blue">
                 <p>LLMが文章を処理する際の<span class="highlight">最小単位</span></p>
             </div>
             <ul>
@@ -1060,31 +1068,31 @@
         </div>
 
         <!-- Slide 49 -->
-        <div class="slide" data-slide="49">
+        <div class="slide">
             <h2>トークナイゼーションの例</h2>
             <div class="code-block">
                 <p>「私はAIを研究している。」</p>
-                <p style="margin-top: 15px;">↓ トークン化</p>
-                <p style="margin-top: 15px; color: #00ff88;">私 / は / AI / を / 研究 / して / いる / 。</p>
+                <p style="margin-top: 12px;">↓ トークン化</p>
+                <p style="margin-top: 12px; color: #00ff88;">私 / は / AI / を / 研究 / して / いる / 。</p>
             </div>
             <p>モデルによってトークナイザー（分割方法）が異なる</p>
         </div>
 
         <!-- Slide 50 -->
-        <div class="slide" data-slide="50">
+        <div class="slide">
             <h2>未知の言葉もトークン化</h2>
             <div class="box">
-                <p style="font-size: 1.3em;">「超次元宇宙猫キャンディ」</p>
+                <p style="font-size: 1.2em;">「超次元宇宙猫キャンディ」</p>
             </div>
             <div class="code-block">
                 <p>超 / 次元 / 宇宙 / 猫 / キャンディ</p>
             </div>
             <p>AI：「超次元宇宙猫というキャラクターをテーマにしたキャンディの名称か？」</p>
-            <p style="margin-top: 15px;">→ 既存のトークンをもとに意味を「予想」</p>
+            <p style="margin-top: 12px;">→ 既存のトークンをもとに意味を「予想」</p>
         </div>
 
         <!-- Slide 51 -->
-        <div class="slide" data-slide="51">
+        <div class="slide">
             <h2>コンテキストウィンドウの限界</h2>
             <div class="warning">
                 <h3>大きすぎると...</h3>
@@ -1097,19 +1105,19 @@
         </div>
 
         <!-- Slide 52 -->
-        <div class="slide" data-slide="52">
+        <div class="slide">
             <h2>Middle-Forgetting現象</h2>
             <div class="box">
                 <p>コンテキストの<span class="highlight">最初と最後</span>を重視し、<br><span class="highlight">中間情報</span>を欠落させてしまう現象</p>
             </div>
-            <p style="margin-top: 20px;">長いロープと短いロープを両端で揃えるイメージ</p>
+            <p style="margin-top: 15px;">長いロープと短いロープを両端で揃えるイメージ</p>
             <p>→ 中間を曲げたり絡めたりして省略される</p>
         </div>
 
         <!-- Slide 53 -->
-        <div class="slide" data-slide="53">
+        <div class="slide">
             <h2>FIFO方式と記憶の薄れ</h2>
-            <div class="box-blue box">
+            <div class="box box-blue">
                 <h3>FIFO = 先入れ先出し方式</h3>
                 <p>古いトークン情報から自動削除</p>
             </div>
@@ -1123,17 +1131,17 @@
         </div>
 
         <!-- Slide 54 -->
-        <div class="slide" data-slide="54">
+        <div class="slide">
             <h2>編集機能の活用</h2>
-            <div class="box-green box">
+            <div class="box box-green">
                 <p>意図通りに伝わっていなければ<br><span class="highlight">プロンプトを修正</span>する</p>
             </div>
             <div class="comparison">
-                <div style="background: rgba(233,69,96,0.15); border: 2px solid #e94560; padding: 25px; border-radius: 15px;">
+                <div style="background: rgba(233,69,96,0.15); border: 2px solid #e94560; padding: 20px; border-radius: 12px;">
                     <h3>編集</h3>
                     <p>前提の修正・ノイズ除去</p>
                 </div>
-                <div style="background: rgba(0,255,136,0.15); border: 2px solid #00ff88; padding: 25px; border-radius: 15px;">
+                <div style="background: rgba(0,255,136,0.15); border: 2px solid #00ff88; padding: 20px; border-radius: 12px;">
                     <h3>新規メッセージ</h3>
                     <p>思考を進める・深める</p>
                 </div>
@@ -1141,16 +1149,16 @@
         </div>
 
         <!-- Slide 55 -->
-        <div class="slide" data-slide="55">
+        <div class="slide">
             <h2>編集のリズム</h2>
             <div class="box" style="text-align: center;">
-                <p style="font-size: 1.5em;">「良い答えが出るまで<span class="highlight">編集</span>」<br>↓<br>「進めるときは<span class="highlight">新規</span>」</p>
+                <p style="font-size: 1.4em;">「良い答えが出るまで<span class="highlight">編集</span>」<br>↓<br>「進めるときは<span class="highlight">新規</span>」</p>
             </div>
-            <p style="margin-top: 30px; text-align: center;">余計な情報処理を減らすためにも、編集機能を活用しよう！</p>
+            <p style="margin-top: 25px; text-align: center;">余計な情報処理を減らすためにも、編集機能を活用しよう！</p>
         </div>
 
         <!-- Slide 56 -->
-        <div class="slide" data-slide="56">
+        <div class="slide">
             <h2>なぜ冗長な答えが出るか？</h2>
             <div class="box">
                 <p>確率的に「<span class="highlight">よくありそうな文章</span>」を生成</p>
@@ -1163,20 +1171,20 @@
         </div>
 
         <!-- Slide 57 -->
-        <div class="slide" data-slide="57">
+        <div class="slide">
             <h2>冗長な表現の例</h2>
             <div class="code-block">
                 <p>「推測して<span style="color: #ff5252;">予想</span>している」</p>
                 <p>「短く<span style="color: #ff5252;">端的</span>に」</p>
             </div>
             <p>→ 簡略化可能な重複表現</p>
-            <div class="box-green box">
-                <p style="font-size: 1.5em; text-align: center;">「生成されたものをそのまま使うな！」</p>
+            <div class="box box-green">
+                <p style="font-size: 1.4em; text-align: center;">「生成されたものをそのまま使うな！」</p>
             </div>
         </div>
 
         <!-- Slide 58 -->
-        <div class="slide" data-slide="58">
+        <div class="slide">
             <h2>情報削減 Phase 1 - グループ化</h2>
             <p>似た内容をグループ化する</p>
             <div class="code-block">
@@ -1187,7 +1195,7 @@
         </div>
 
         <!-- Slide 59 -->
-        <div class="slide" data-slide="59">
+        <div class="slide">
             <h2>情報削減 Phase 2 - 削除・統合</h2>
             <p>あってもなくても伝わるなら削除</p>
             <div class="comparison">
@@ -1203,10 +1211,10 @@
         </div>
 
         <!-- Slide 60: MW -->
-        <div class="slide" data-slide="60">
+        <div class="slide">
             <div class="mw-box">
                 <h3>MW④ ミニワークショップ</h3>
-                <h2 style="color: #fff;">文章・スライド添削</h2>
+                <h2>文章・スライド添削</h2>
                 <p style="color: #ddd;">15分間</p>
             </div>
             <ul>
@@ -1217,18 +1225,18 @@
         </div>
 
         <!-- Slide 61: Section Title -->
-        <div class="slide section-title" data-slide="61">
+        <div class="slide section-title">
             <span class="section-number">WS</span>
             <h2>2日目ワークショップ</h2>
             <p>6時間</p>
         </div>
 
         <!-- Slide 62 -->
-        <div class="slide" data-slide="62">
+        <div class="slide">
             <h2>ワークショップ概要</h2>
             <div class="box">
                 <h3>テーマ</h3>
-                <p style="font-size: 1.5em;">自身の所属する会社の<span class="highlight">営業資料</span>を作成</p>
+                <p style="font-size: 1.4em;">自身の所属する会社の<span class="highlight">営業資料</span>を作成</p>
             </div>
             <h3>使用ツール</h3>
             <ul>
@@ -1238,37 +1246,37 @@
         </div>
 
         <!-- Slide 63 -->
-        <div class="slide" data-slide="63">
+        <div class="slide">
             <h2>ワークショップの流れ</h2>
-            <div class="flow-chart" style="flex-direction: column; gap: 20px;">
-                <div class="flow-item" style="width: 80%;"><strong>1.</strong> TCREIを踏まえたプロンプト設計</div>
-                <div class="flow-arrow" style="transform: rotate(90deg);">→</div>
-                <div class="flow-item" style="width: 80%;"><strong>2.</strong> 資料生成</div>
-                <div class="flow-arrow" style="transform: rotate(90deg);">→</div>
-                <div class="flow-item" style="width: 80%;"><strong>3.</strong> 出力された資料の情報修正・削減</div>
-                <div class="flow-arrow" style="transform: rotate(90deg);">→</div>
-                <div class="flow-item" style="width: 80%;"><strong>4.</strong> ファクトチェック</div>
-                <div class="flow-arrow" style="transform: rotate(90deg);">→</div>
-                <div class="flow-item" style="width: 80%;"><strong>5.</strong> デザイン調整（画像生成スキル活用）</div>
+            <div class="flow-chart vertical-flow">
+                <div class="flow-item"><strong>1.</strong> TCREIを踏まえたプロンプト設計</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-item"><strong>2.</strong> 資料生成</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-item"><strong>3.</strong> 出力された資料の情報修正・削減</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-item"><strong>4.</strong> ファクトチェック</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-item"><strong>5.</strong> デザイン調整（画像生成スキル活用）</div>
             </div>
         </div>
 
         <!-- Slide 64 -->
-        <div class="slide" data-slide="64">
+        <div class="slide">
             <h2>まとめ - 3つの力</h2>
             <div class="grid-3">
                 <div style="border: 3px solid #e94560;">
-                    <div class="tcrei-box t-box">TCR</div>
+                    <span class="tcrei-box t-box">TCR</span>
                     <h3>対話設計能力</h3>
                     <p>構造化された指示</p>
                 </div>
                 <div style="border: 3px solid #00ff88;">
-                    <div class="tcrei-box e-box">E</div>
+                    <span class="tcrei-box e-box">E</span>
                     <h3>品質管理能力</h3>
                     <p>評価・検証</p>
                 </div>
                 <div style="border: 3px solid #ffd93d;">
-                    <div class="tcrei-box i-box">I</div>
+                    <span class="tcrei-box i-box">I</span>
                     <h3>編集能力</h3>
                     <p>反復・改善</p>
                 </div>
@@ -1276,7 +1284,7 @@
         </div>
 
         <!-- Slide 65 -->
-        <div class="slide" data-slide="65">
+        <div class="slide">
             <h2>研修で得られるスキル</h2>
             <ul>
                 <li>AIの出力に対する<strong>妥当性・品質の判断</strong></li>
@@ -1289,10 +1297,10 @@
         </div>
 
         <!-- Slide 66: Final -->
-        <div class="slide title-slide" data-slide="66">
+        <div class="slide title-slide">
             <h1>最後に</h1>
-            <div class="box" style="margin: 40px 0;">
-                <p style="font-size: 1.5em; text-align: center;">
+            <div class="box" style="margin: 35px 0;">
+                <p style="font-size: 1.4em; text-align: center;">
                     「AIに使われる」のではなく<br>
                     <span class="highlight">「AIを監督/コントロール・編集する」</span>
                 </p>
@@ -1302,15 +1310,15 @@
         </div>
 
         <!-- Slide 67: Appendix -->
-        <div class="slide" data-slide="67">
+        <div class="slide">
             <h2>付録A: Gemini vs ChatGPT 編集機能比較</h2>
             <div class="comparison">
-                <div style="background: rgba(233,69,96,0.15); border: 2px solid #e94560; padding: 25px; border-radius: 15px;">
+                <div style="background: rgba(233,69,96,0.15); border: 2px solid #e94560; padding: 20px; border-radius: 12px;">
                     <h3>ChatGPT</h3>
                     <p>編集すると後続プロンプトもリセット</p>
                     <p>→ 自分で再入力が必要</p>
                 </div>
-                <div style="background: rgba(0,217,255,0.15); border: 2px solid #00d9ff; padding: 25px; border-radius: 15px;">
+                <div style="background: rgba(0,217,255,0.15); border: 2px solid #00d9ff; padding: 20px; border-radius: 12px;">
                     <h3>Gemini</h3>
                     <p>最新入力のみ編集可能</p>
                     <p>→ 前提は編集不可</p>
@@ -1319,7 +1327,7 @@
         </div>
 
         <!-- Slide 68: Appendix -->
-        <div class="slide" data-slide="68">
+        <div class="slide">
             <h2>付録B: 参考リンク集</h2>
             <ul>
                 <li>Google Prompt Engineering Course</li>
@@ -1327,8 +1335,8 @@
                 <li>コンテキストウィンドウ研究論文</li>
                 <li>ハルシネーション対策ガイド</li>
             </ul>
-            <div class="box" style="margin-top: 40px; text-align: center;">
-                <p style="font-size: 1.5em;">ご清聴ありがとうございました</p>
+            <div class="box" style="margin-top: 35px; text-align: center;">
+                <p style="font-size: 1.4em;">ご清聴ありがとうございました</p>
             </div>
         </div>
     </div>
@@ -1339,64 +1347,69 @@
     </div>
 
     <script>
-        let currentSlide = 1;
-        const totalSlides = document.querySelectorAll('.slide').length;
+        (function() {
+            var currentSlide = 1;
+            var slides = document.querySelectorAll('.slide');
+            var totalSlides = slides.length;
 
-        function showSlide(n) {
-            const slides = document.querySelectorAll('.slide');
+            function showSlide(n) {
+                if (n > totalSlides) currentSlide = 1;
+                if (n < 1) currentSlide = totalSlides;
 
-            if (n > totalSlides) currentSlide = 1;
-            if (n < 1) currentSlide = totalSlides;
+                for (var i = 0; i < slides.length; i++) {
+                    slides[i].classList.remove('active');
+                }
+                slides[currentSlide - 1].classList.add('active');
 
-            slides.forEach(slide => slide.classList.remove('active'));
-            slides[currentSlide - 1].classList.add('active');
-
-            // Update progress bar
-            const progress = (currentSlide / totalSlides) * 100;
-            document.getElementById('progress').style.width = progress + '%';
-
-            // Update slide number
-            document.getElementById('slideNumber').textContent = currentSlide + ' / ' + totalSlides;
-        }
-
-        function nextSlide() {
-            currentSlide++;
-            showSlide(currentSlide);
-        }
-
-        function prevSlide() {
-            currentSlide--;
-            showSlide(currentSlide);
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                nextSlide();
-            } else if (e.key === 'ArrowLeft') {
-                prevSlide();
+                var progress = (currentSlide / totalSlides) * 100;
+                document.getElementById('progress').style.width = progress + '%';
+                document.getElementById('slideNumber').textContent = currentSlide + ' / ' + totalSlides;
             }
-        });
 
-        // Touch navigation
-        let touchStartX = 0;
-        let touchEndX = 0;
+            window.nextSlide = function() {
+                currentSlide++;
+                showSlide(currentSlide);
+            };
 
-        document.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
+            window.prevSlide = function() {
+                currentSlide--;
+                showSlide(currentSlide);
+            };
 
-        document.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            if (touchStartX - touchEndX > 50) {
-                nextSlide();
-            } else if (touchEndX - touchStartX > 50) {
-                prevSlide();
-            }
-        });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+                    e.preventDefault();
+                    prevSlide();
+                } else if (e.key === 'Home') {
+                    currentSlide = 1;
+                    showSlide(currentSlide);
+                } else if (e.key === 'End') {
+                    currentSlide = totalSlides;
+                    showSlide(currentSlide);
+                }
+            });
 
-        // Initialize
-        showSlide(currentSlide);
+            var touchStartX = 0;
+            var touchEndX = 0;
+
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50) {
+                    nextSlide();
+                } else if (touchEndX - touchStartX > 50) {
+                    prevSlide();
+                }
+            }, false);
+
+            showSlide(currentSlide);
+        })();
     </script>
 </body>
 </html>
