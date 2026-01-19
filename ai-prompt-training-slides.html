@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIプロンプト品質研修</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            overflow: hidden;
+            line-height: 1.6;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 90%;
+            max-width: 1200px;
+            min-height: 80vh;
+            max-height: 95vh;
+            padding: 50px;
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            color: #e94560;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #e94560;
+            border-bottom: 3px solid #e94560;
+            padding-bottom: 12px;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            margin: 20px 0 12px;
+            color: #00d9ff;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+
+        ul {
+            margin: 15px 0 15px 35px;
+            font-size: 1.1em;
+            line-height: 1.9;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #bbb;
+        }
+
+        .highlight {
+            color: #e94560;
+            font-weight: bold;
+        }
+
+        .box {
+            background: rgba(233, 69, 96, 0.1);
+            border-left: 5px solid #e94560;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .box-blue {
+            background: rgba(0, 217, 255, 0.1);
+            border-left: 5px solid #00d9ff;
+        }
+
+        .box-green {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 5px solid #00ff88;
+        }
+
+        .comparison {
+            display: flex;
+            gap: 25px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .comparison > div {
+            flex: 1;
+            min-width: 280px;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .before {
+            background: rgba(255, 82, 82, 0.15);
+            border: 2px solid #ff5252;
+        }
+
+        .after {
+            background: rgba(0, 255, 136, 0.15);
+            border: 2px solid #00ff88;
+        }
+
+        .tcrei-container {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .tcrei-box {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 8px;
+            border-radius: 40px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .t-box { background: linear-gradient(135deg, #e94560, #ff6b6b); }
+        .c-box { background: #0f3460; border: 2px solid #00d9ff; }
+        .r-box { background: linear-gradient(135deg, #00d9ff, #00a8cc); color: #1a1a2e; }
+        .e-box { background: linear-gradient(135deg, #00ff88, #00cc6a); color: #1a1a2e; }
+        .i-box { background: linear-gradient(135deg, #ffd93d, #ff9f1c); color: #1a1a2e; }
+
+        .title-slide {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+        }
+
+        .title-slide h1 {
+            font-size: 3em;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5em;
+            border: none;
+            color: #00d9ff;
+        }
+
+        .section-number {
+            font-size: 6em;
+            font-weight: bold;
+            opacity: 0.15;
+            position: absolute;
+            top: 10px;
+            right: 30px;
+            color: #e94560;
+        }
+
+        .nav {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav button {
+            padding: 12px 35px;
+            font-size: 1em;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav button:hover {
+            transform: scale(1.05);
+        }
+
+        .nav .prev {
+            background: #0f3460;
+            color: #fff;
+        }
+
+        .nav .next {
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            color: #fff;
+        }
+
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #e94560, #00d9ff);
+            transition: width 0.3s;
+            z-index: 100;
+        }
+
+        .slide-number {
+            position: fixed;
+            bottom: 30px;
+            right: 35px;
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .emoji {
+            font-size: 3em;
+            margin: 15px 0;
+        }
+
+        .grid-3 {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .grid-3 > div {
+            flex: 1;
+            min-width: 200px;
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .warning {
+            background: rgba(255, 193, 7, 0.15);
+            border: 2px solid #ffc107;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 18px 0;
+        }
+
+        .code-block {
+            background: #0d1117;
+            padding: 18px;
+            border-radius: 10px;
+            font-family: "Consolas", "Monaco", monospace;
+            margin: 18px 0;
+            overflow-x: auto;
+            font-size: 1.1em;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin: 4px;
+        }
+
+        .tag-red { background: #e94560; color: #fff; }
+        .tag-blue { background: #00d9ff; color: #1a1a2e; }
+        .tag-green { background: #00ff88; color: #1a1a2e; }
+
+        .big-number {
+            font-size: 4em;
+            font-weight: bold;
+            color: #e94560;
+        }
+
+        .mw-box {
+            background: linear-gradient(135deg, #4a0080, #7b2cbf);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .mw-box h3 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .mw-box h2 {
+            color: #fff;
+            border: none;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            background: rgba(233, 69, 96, 0.2);
+            color: #e94560;
+        }
+
+        .flow-chart {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .flow-arrow {
+            font-size: 1.8em;
+            color: #e94560;
+        }
+
+        .vertical-flow {
+            flex-direction: column;
+        }
+
+        .vertical-flow .flow-item {
+            width: 70%;
+        }
+
+        .vertical-flow .flow-arrow {
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+            }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.5em; }
+            .comparison { flex-direction: column; }
+            .grid-3 { flex-direction: column; }
+            .nav button { padding: 10px 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress" id="progress"></div>
+    <div class="slide-number" id="slideNumber"></div>
+
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide title-slide active">
+            <h1>AIを監督する力を身につける</h1>
+            <p>対話設計能力と品質管理能力の習得</p>
+            <p style="margin-top: 35px; color: #666;">AIプロンプト品質研修</p>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+            <h2>研修の背景</h2>
+            <p>生成AIを<span class="highlight">「うまく使いこなす」</span>とは？</p>
+            <div class="box">
+                <p>出力物をそのまま使うのではなく、意図したアウトプットを確実に得るための能力が必要</p>
+            </div>
+            <h3>求められる2つの能力</h3>
+            <ul>
+                <li><strong>対話設計能力</strong> - AIに正しく意図を伝える力</li>
+                <li><strong>品質管理能力</strong> - 出力を評価・改善する力</li>
+            </ul>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide">
+            <h2>研修の目標</h2>
+            <div class="grid-3">
+                <div>
+                    <div class="emoji">🎯</div>
+                    <h3>思考法</h3>
+                    <p>MECE・構造化によるTCRへの落とし込み</p>
+                </div>
+                <div>
+                    <div class="emoji">✅</div>
+                    <h3>検証</h3>
+                    <p>ファクトチェックによるEvaluation</p>
+                </div>
+                <div>
+                    <div class="emoji">✏️</div>
+                    <h3>編集</h3>
+                    <p>内部構造理解に基づいたIteration</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide">
+            <h2>研修の全体像</h2>
+            <div class="comparison">
+                <div style="background: rgba(233,69,96,0.1); padding: 25px; border-radius: 12px; text-align: center;">
+                    <h3>講義</h3>
+                    <div class="big-number">6時間</div>
+                    <p>理論＋ミニワークショップ</p>
+                </div>
+                <div style="background: rgba(0,217,255,0.1); padding: 25px; border-radius: 12px; text-align: center;">
+                    <h3>ワークショップ</h3>
+                    <div class="big-number" style="color: #00d9ff;">6時間</div>
+                    <p>実践・アウトプット中心</p>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 25px;">計12時間 / 2日間構成 / ゲーム性を取り入れた演習</p>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide">
+            <h2>TCREIフレームワーク</h2>
+            <p>Google Prompt Engineering courseのテクニック</p>
+            <div class="tcrei-container">
+                <span class="tcrei-box t-box">T: Task</span>
+                <span class="tcrei-box c-box">C: Context</span>
+                <span class="tcrei-box r-box">R: References</span>
+                <span class="tcrei-box e-box">E: Evaluation</span>
+                <span class="tcrei-box i-box">I: Iteration</span>
+            </div>
+            <div class="box box-blue">
+                <p>覚え方：<strong>「タ・ブン・サン・ヒョウ・ク」</strong> → 「多分、三票、来る」</p>
+            </div>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="slide">
+            <h2>研修の3部構成</h2>
+            <div class="flow-chart">
+                <div class="flow-item" style="border: 3px solid #e94560;">
+                    <h3>前半</h3>
+                    <p>思考の整理法</p>
+                    <span class="tag tag-red">TCR</span>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-item" style="border: 3px solid #00ff88;">
+                    <h3>中盤</h3>
+                    <p>評価と検証</p>
+                    <span class="tag tag-green">E</span>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-item" style="border: 3px solid #ffd93d;">
+                    <h3>後半</h3>
+                    <p>仕組みと編集</p>
+                    <span class="tag" style="background: #ffd93d; color: #1a1a2e;">I</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Section Title -->
+        <div class="slide section-title">
+            <span class="section-number">01</span>
+            <h2>第1部：導入＋構造化・MECE</h2>
+            <p>90分</p>
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="slide">
+            <h2>MECEとは？</h2>
+            <div class="box">
+                <h3>Mutually Exclusive, Collectively Exhaustive</h3>
+                <p style="font-size: 1.4em; text-align: center; margin: 15px 0;">
+                    <span class="highlight">「漏れなく、ダブりなく」</span>
+                </p>
+            </div>
+            <h3>なぜMECEが重要か？</h3>
+            <ul>
+                <li>AIへの指示を構造化できる</li>
+                <li>抜け漏れを防げる</li>
+                <li>重複による混乱を避けられる</li>
+            </ul>
+        </div>
+
+        <!-- Slide 9 -->
+        <div class="slide">
+            <h2>構造化とは？</h2>
+            <div class="box box-blue">
+                <p>料理に例えると：</p>
+                <h3>「何を作るかに向けて、材料・工程を整理すること」</h3>
+            </div>
+            <p style="margin-top: 25px; text-align: center; font-size: 1.3em;">
+                曖昧な指示 → 焦点の定まらない結果
+            </p>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="slide">
+            <h2>構造化されていない例 <span style="color: #ff5252;">Before</span></h2>
+            <div class="before" style="padding: 25px; margin: 25px 0; text-align: center;">
+                <p style="font-size: 1.8em;">「なんか美味しいもの作って」</p>
+            </div>
+            <ul>
+                <li><strong>目的：</strong>不明（誰が食べる？いつ？）</li>
+                <li><strong>文脈：</strong>不明（誰と食べる？一人？家族？）</li>
+                <li><strong>制約：</strong>不明（時間・予算・道具）</li>
+            </ul>
+            <div class="warning">
+                <p>→ 何を作ればいいか分からない！</p>
+            </div>
+        </div>
+
+        <!-- Slide 11 -->
+        <div class="slide">
+            <h2>構造化された例 <span style="color: #00ff88;">After</span> - 目的設定</h2>
+            <div class="after" style="padding: 25px; margin: 25px 0;">
+                <h3>Step 1: 目的（タスク）を決める</h3>
+                <p style="font-size: 1.4em; text-align: center; margin-top: 15px;">
+                    「平日の夜に、30分以内で作れる2人分の夕食」
+                </p>
+            </div>
+            <p>具体的で明確な目的を設定することで、次のステップが見える</p>
+        </div>
+
+        <!-- Slide 12 -->
+        <div class="slide">
+            <h2>構造化された例 - 文脈・制約整理</h2>
+            <h3>Step 2: 文脈・制約を整理する</h3>
+            <table>
+                <tr><th>項目</th><th>内容</th></tr>
+                <tr><td>人数</td><td>大人2人</td></tr>
+                <tr><td>予算</td><td>1人500円以内</td></tr>
+                <tr><td>調理器具</td><td>フライパン1つ</td></tr>
+                <tr><td>食事制限</td><td>なし</td></tr>
+            </table>
+        </div>
+
+        <!-- Slide 13 -->
+        <div class="slide">
+            <h2>構造化された例 - 要素分解</h2>
+            <h3>Step 3: 要素に分解する</h3>
+            <div class="grid-3">
+                <div>
+                    <h3>主菜</h3>
+                    <p>鶏肉 / 豚肉 / 豆腐</p>
+                </div>
+                <div>
+                    <h3>調理法</h3>
+                    <p>焼く / 炒める / 煮る</p>
+                </div>
+                <div>
+                    <h3>構成</h3>
+                    <p>主菜 + 副菜 + 主食</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14 -->
+        <div class="slide">
+            <h2>構造化された例 - 判断・改善</h2>
+            <h3>Step 4: 判断・改善する</h3>
+            <div class="comparison">
+                <div class="before">
+                    <h3>問題発見</h3>
+                    <ul>
+                        <li>時間がかかりすぎる</li>
+                        <li>味が単調</li>
+                    </ul>
+                </div>
+                <div class="after">
+                    <h3>改善策</h3>
+                    <ul>
+                        <li>→ 工程を減らす</li>
+                        <li>→ 調味を調整</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 15px;">構造化により改善点が見える！</p>
+        </div>
+
+        <!-- Slide 15: MW -->
+        <div class="slide">
+            <div class="mw-box">
+                <h3>MW① ミニワークショップ</h3>
+                <h2>「今晩何食べる？」</h2>
+                <p style="color: #ddd;">15分間</p>
+            </div>
+            <ul>
+                <li>提示された材料・前提をもとに構造化</li>
+                <li>構成要素の練り出しから整理まで</li>
+                <li>グループでディスカッション</li>
+            </ul>
+        </div>
+
+        <!-- Slide 16 -->
+        <div class="slide">
+            <h2>フェルミ推定でTCR思考を学ぶ</h2>
+            <div class="box box-blue">
+                <p>フェルミ推定ができると <span class="highlight">TCR の整理</span> ができる</p>
+                <p>LLMとの対話においても有益</p>
+            </div>
+        </div>
+
+        <!-- Slide 17 -->
+        <div class="slide">
+            <h2>フェルミ推定の例題</h2>
+            <div class="box" style="text-align: center;">
+                <p style="font-size: 1.8em;">「日本にある電柱の数は？」</p>
+            </div>
+            <h3>目的</h3>
+            <p>日本にある電柱の数を推定する</p>
+        </div>
+
+        <!-- Slide 18 -->
+        <div class="slide">
+            <h2>アプローチの設定</h2>
+            <div class="box box-green">
+                <p>日本の面積 × 1km²あたりの電柱数</p>
+            </div>
+            <h3>要素の洗い出し</h3>
+            <ul>
+                <li>都市部と田舎で密度が違う → 別々に推定</li>
+                <li>総面積のうち都市/田舎の割合を把握</li>
+            </ul>
+        </div>
+
+        <!-- Slide 19 -->
+        <div class="slide">
+            <h2>必要な要素の収集</h2>
+            <table>
+                <tr><th>項目</th><th>数値</th></tr>
+                <tr><td>都市面積（全体の10%）</td><td>38,000 km²</td></tr>
+                <tr><td>田舎面積（全体の90%）</td><td>342,000 km²</td></tr>
+                <tr><td>都市の電柱密度</td><td>50m × 50m で1本</td></tr>
+                <tr><td>田舎の電柱密度</td><td>150m × 150m で1本</td></tr>
+            </table>
+        </div>
+
+        <!-- Slide 20 -->
+        <div class="slide">
+            <h2>計算と結果</h2>
+            <div class="code-block">
+                <p>都市本数 = 38,000 × 1,000 × 1,000 ÷ 2,500 = <strong>15,200,000本</strong></p>
+                <p>田舎本数 = 342,000 × 1,000 × 1,000 ÷ 22,500 = <strong>15,200,000本</strong></p>
+                <p style="margin-top: 15px; font-size: 1.2em;">合計 = <span style="color: #00ff88;">約30,400,000本</span></p>
+            </div>
+        </div>
+
+        <!-- Slide 21 -->
+        <div class="slide">
+            <h2>フェルミ推定 = TCRの整理</h2>
+            <div class="grid-3">
+                <div style="border: 2px solid #e94560;">
+                    <h3 style="color: #e94560;">T: タスク策定</h3>
+                    <p>日本にある電柱の数を推定する</p>
+                </div>
+                <div style="border: 2px solid #00d9ff;">
+                    <h3>C: 文脈整理</h3>
+                    <p>日本の面積、都市/田舎の比率</p>
+                </div>
+                <div style="border: 2px solid #00ff88;">
+                    <h3 style="color: #00ff88;">R: 制約・条件</h3>
+                    <p>密度の仮定を設定</p>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 25px;">気づかないうちにTCRの整理を行っている！</p>
+        </div>
+
+        <!-- Slide 22: Section Title -->
+        <div class="slide section-title">
+            <span class="section-number">02</span>
+            <h2>第2部：プロンプト分解と出力評価</h2>
+            <p>90分</p>
+        </div>
+
+        <!-- Slide 23 -->
+        <div class="slide">
+            <h2>TCREIフレームワーク詳細</h2>
+            <p>Google Prompt Engineeringコースのテクニック</p>
+            <div class="tcrei-container">
+                <span class="tcrei-box t-box">T: タスク</span>
+                <span class="tcrei-box c-box">C: 文脈</span>
+                <span class="tcrei-box r-box">R: 参照</span>
+                <span class="tcrei-box e-box">E: 評価</span>
+                <span class="tcrei-box i-box">I: 繰り返し</span>
+            </div>
+            <div class="box">
+                <p>覚え方：<strong>「タ・ブン・サン・ヒョウ・ク」</strong></p>
+                <p style="text-align: center; font-size: 1.4em;">→ 「多分、三票、来る」</p>
+            </div>
+        </div>
+
+        <!-- Slide 24 -->
+        <div class="slide">
+            <h2>T - Task（タスク）</h2>
+            <div class="box">
+                <p>「何をAIにしてほしいか」を<span class="highlight">精密に言語化</span>する</p>
+            </div>
+            <ul>
+                <li>文章生成？</li>
+                <li>画像生成？</li>
+                <li>表生成？</li>
+                <li>動画生成？</li>
+            </ul>
+            <div class="warning">
+                <p>曖昧な指示 → 焦点の定まらない結果</p>
+            </div>
+        </div>
+
+        <!-- Slide 25 -->
+        <div class="slide">
+            <h2>Task の良い例・悪い例</h2>
+            <div class="comparison">
+                <div class="before">
+                    <h3>❌ 悪い例</h3>
+                    <p>「市場動向を分析せよ」</p>
+                </div>
+                <div class="after">
+                    <h3>⭕ 良い例</h3>
+                    <p>「再生可能エネルギー分野における第4四半期の新興市場動向について、太陽光および風力技術に焦点を当て、直近2会計年度の定量データを用いて簡潔な分析を生成せよ」</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 26 -->
+        <div class="slide">
+            <h2>C - Context（文脈）</h2>
+            <div class="box box-blue">
+                <p>必要不可欠な<span class="highlight">足場（コンテキスト）</span>を提供する</p>
+            </div>
+            <ul>
+                <li>あなたの年齢、役職</li>
+                <li>出力の使用用途</li>
+                <li>ペルソナ設定（例：「CTOの立場で回答せよ」）</li>
+                <li>想定読者の明示</li>
+            </ul>
+        </div>
+
+        <!-- Slide 27 -->
+        <div class="slide">
+            <h2>Context の例</h2>
+            <div class="box box-green">
+                <p style="font-size: 1.05em;">「<strong>経験豊富な法務顧問</strong>というペルソナを想定し、革新的な機械学習アルゴリズムを立ち上げる<strong>SaaSスタートアップ</strong>における主要な知的財産上の検討事項を整理したメモランダムを作成せよ」</p>
+            </div>
+            <ul>
+                <li><span class="tag tag-red">ペルソナ</span> 経験豊富な法務顧問</li>
+                <li><span class="tag tag-blue">状況</span> SaaSスタートアップ</li>
+                <li><span class="tag tag-green">出力形式</span> メモランダム</li>
+            </ul>
+        </div>
+
+        <!-- Slide 28 -->
+        <div class="slide">
+            <h2>R - References（参照）</h2>
+            <div class="box">
+                <p><span class="highlight">具体例と制約条件</span>を与える</p>
+            </div>
+            <ul>
+                <li>「<strong>300字以内</strong>で」</li>
+                <li>「<strong>上司向けの敬語</strong>を使った丁寧なメール」</li>
+                <li>「<strong>シンプルで端的</strong>に」</li>
+                <li>既存のAPI構造に準拠したドキュメント</li>
+            </ul>
+        </div>
+
+        <!-- Slide 29 -->
+        <div class="slide">
+            <h2>E - Evaluation（評価）</h2>
+            <div class="box box-green">
+                <p>AIの応答を受け取った後の<span class="highlight">厳密な評価</span></p>
+                <p>単なる受容ではなく、綿密な分析と吟味</p>
+            </div>
+        </div>
+
+        <!-- Slide 30 -->
+        <div class="slide">
+            <h2>評価の3つの確認ポイント</h2>
+            <div class="grid-3">
+                <div style="border: 2px solid #e94560;">
+                    <h3 style="color: #e94560;">タスク</h3>
+                    <p>出力は定義されたタスクに十分対応しているか？</p>
+                </div>
+                <div style="border: 2px solid #00d9ff;">
+                    <h3>文脈</h3>
+                    <p>提示した文脈は適切に活用されているか？</p>
+                </div>
+                <div style="border: 2px solid #00ff88;">
+                    <h3 style="color: #00ff88;">参照</h3>
+                    <p>提示した条件や制約と整合しているか？</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 31 -->
+        <div class="slide">
+            <h2>I - Iteration（反復）</h2>
+            <div class="box" style="text-align: center;">
+                <p style="font-size: 1.4em;">評価結果を踏まえ、プロンプトを<span class="highlight">改良</span>する</p>
+            </div>
+            <div class="box box-blue">
+                <p>反復こそが、最適なプロンプトを鍛え上げる<strong>炉</strong>である</p>
+            </div>
+            <p style="margin-top: 15px;">タスク定義、文脈提示、参照情報における<strong>わずかな調整</strong>が、AI出力の質を大きく向上させることがある</p>
+        </div>
+
+        <!-- Slide 32: MW -->
+        <div class="slide">
+            <div class="mw-box">
+                <h3>MW② ミニワークショップ</h3>
+                <h2>「TCR評価・作成」</h2>
+                <p style="color: #ddd;">15分間</p>
+            </div>
+            <h3>選択肢</h3>
+            <ul>
+                <li><strong>案1:</strong> TCRを整理したプロンプトを作成 → 出力が意図と合っているか確認</li>
+                <li><strong>案2:</strong> 用意されたプロンプトと出力でTCR評価を実施</li>
+            </ul>
+        </div>
+
+        <!-- Slide 33: Section Title -->
+        <div class="slide section-title">
+            <span class="section-number">03</span>
+            <h2>第3部：ハルシネーションと検証判断</h2>
+            <p>90分</p>
+        </div>
+
+        <!-- Slide 34 -->
+        <div class="slide">
+            <h2>ハルシネーションとは？</h2>
+            <div class="box">
+                <p>AIが<span class="highlight">事実ではない情報</span>をもっともらしく生成する現象</p>
+            </div>
+            <div class="box box-blue">
+                <p>LLMは統計的な確率に基づいて<br>「<strong>次の言葉を予測している</strong>」だけ</p>
+            </div>
+        </div>
+
+        <!-- Slide 35 -->
+        <div class="slide">
+            <h2>ハルシネーションの有名な例</h2>
+            <div class="box" style="text-align: center;">
+                <p style="font-size: 1.6em;">「Strawberry」の中に<br>「r」はいくつある？</p>
+            </div>
+            <div class="warning">
+                <p>ChatGPTが正しく数えられない有名な例</p>
+                <p>文字を数えるのではなく、確率的に回答を生成している</p>
+            </div>
+        </div>
+
+        <!-- Slide 36 -->
+        <div class="slide">
+            <h2>ハルシネーションチェックが必要な状況①</h2>
+            <ul>
+                <li><strong>回答の事実性が重要な場合</strong>
+                    <ul>
+                        <li>アカデミック用途</li>
+                        <li>ビジネス用途のファクトチェック</li>
+                    </ul>
+                </li>
+                <li><strong>最新の情報が求められる場合</strong></li>
+            </ul>
+            <div class="box box-green">
+                <p>これらは使用用途の性質上、正確性を要する</p>
+            </div>
+        </div>
+
+        <!-- Slide 37 -->
+        <div class="slide">
+            <h2>ハルシネーションチェックが必要な状況②</h2>
+            <ul>
+                <li><strong>簡単にググって出てこないニッチな内容</strong>
+                    <ul><li>RAGがあっても学習データに情報がない可能性</li></ul>
+                </li>
+                <li><strong>数字が絡む質問</strong>
+                    <ul><li>LLMは拡張ツールを使わない限り計算に弱い</li></ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Slide 38 -->
+        <div class="slide">
+            <h2>ハルシネーションチェックが必要な状況③</h2>
+            <ul>
+                <li><strong>歴史的事実など解釈が分かれる分野</strong>
+                    <ul><li>例：ChatGPT（米国）とDeepSeek（中国）で回答が異なる</li></ul>
+                </li>
+                <li><strong>条件が複雑で例外が多い分野</strong>
+                    <ul><li>LLMが見落とし・無視する可能性</li></ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Slide 39 -->
+        <div class="slide">
+            <h2>事実と意見を区別する</h2>
+            <div class="comparison">
+                <div style="background: rgba(0,217,255,0.15); border: 2px solid #00d9ff; padding: 20px; border-radius: 12px;">
+                    <h3>事実</h3>
+                    <p>エビデンスをもって証明できる</p>
+                    <p>普遍的で議論の余地がない</p>
+                </div>
+                <div style="background: rgba(255,193,7,0.15); border: 2px solid #ffc107; padding: 20px; border-radius: 12px;">
+                    <h3>意見</h3>
+                    <p>「正しい」も「間違い」もない</p>
+                    <p>信条・態度・価値観・感情の表現</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 40 -->
+        <div class="slide">
+            <h2>事実と意見の例</h2>
+            <div class="comparison">
+                <div class="after">
+                    <h3>事実</h3>
+                    <p style="font-size: 1.2em;">「犬は哺乳類である」</p>
+                    <p>→ 議論の余地なし</p>
+                </div>
+                <div class="before">
+                    <h3>意見</h3>
+                    <p style="font-size: 1.2em;">「第二次世界大戦はひどいものだった」</p>
+                    <p>→ 何をもって「ひどい」とするか不明瞭</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 41 -->
+        <div class="slide">
+            <h2>言葉のバイアスに注意</h2>
+            <div class="box">
+                <p style="font-size: 1.2em;">「AIは人間の仕事を<strong>なくす</strong>危険な存在だ」</p>
+            </div>
+            <ul>
+                <li>100の仕事のうち1がAIに代替</li>
+                <li>→「奪う」は正しい表現か？</li>
+                <li>→「なくす」は100が0になるように聞こえる</li>
+            </ul>
+            <div class="box box-green">
+                <p>言葉の持つバイアスを識別する力を身につけよう！</p>
+            </div>
+        </div>
+
+        <!-- Slide 42: MW -->
+        <div class="slide">
+            <div class="mw-box">
+                <h3>MW③ ミニワークショップ</h3>
+                <h2>Kahoot + 3分ファクトチェック</h2>
+                <p style="color: #ddd;">15分間</p>
+            </div>
+            <ul>
+                <li>例題で検証が必要かをYES/NOで回答</li>
+                <li>なぜ検証が必要かの解説</li>
+            </ul>
+        </div>
+
+        <!-- Slide 43 -->
+        <div class="slide">
+            <h2>ファクトチェック・スプリント</h2>
+            <div class="flow-chart">
+                <div class="flow-item">
+                    <h3>Phase 1</h3>
+                    <p>個人判断</p>
+                    <span class="tag tag-red">5分</span>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-item">
+                    <h3>Phase 2</h3>
+                    <p>超短時間検証</p>
+                    <span class="tag tag-blue">10分</span>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-item">
+                    <h3>Phase 3</h3>
+                    <p>共有と解説</p>
+                    <span class="tag tag-green">10分</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 44 -->
+        <div class="slide">
+            <h2>ファクトチェックの例題</h2>
+            <div class="box">
+                <p>「オンライン教育は対面授業より学習効果が高い」</p>
+            </div>
+            <div class="box box-blue">
+                <p>「モンテッソーリ教育に効果はない」</p>
+            </div>
+            <h3>検証のポイント</h3>
+            <ul>
+                <li>どの地域での効果か？</li>
+                <li>何をもって「効果がある」とするか？</li>
+                <li>評価基準は明示されているか？</li>
+            </ul>
+        </div>
+
+        <!-- Slide 45 -->
+        <div class="slide">
+            <h2>検証の心構え</h2>
+            <div class="box box-green">
+                <p style="font-size: 1.2em;">検証は情報の確度を<strong>100に近づける</strong>作業であって<br><strong>100にする</strong>作業ではない</p>
+            </div>
+            <ul>
+                <li>「結論を保留する」判断も成果</li>
+                <li>検証不能だったこと自体も成果</li>
+            </ul>
+        </div>
+
+        <!-- Slide 46: Section Title -->
+        <div class="slide section-title">
+            <span class="section-number">04</span>
+            <h2>第4部：LLMの限界理解と編集スキル</h2>
+            <p>90分</p>
+        </div>
+
+        <!-- Slide 47 -->
+        <div class="slide">
+            <h2>コンテキストウィンドウとは？</h2>
+            <div class="box">
+                <p>過去の会話で交換した情報を<span class="highlight">保持できる範囲</span></p>
+            </div>
+            <ul>
+                <li>ホワイトボードのようなもの</li>
+                <li>モデルによってサイズが異なる</li>
+                <li>AIは「記憶」しているのではなく、トークンを「参照」している</li>
+            </ul>
+        </div>
+
+        <!-- Slide 48 -->
+        <div class="slide">
+            <h2>トークンとは？</h2>
+            <div class="box box-blue">
+                <p>LLMが文章を処理する際の<span class="highlight">最小単位</span></p>
+            </div>
+            <ul>
+                <li>英語：アルファベット単位</li>
+                <li>日本語：ひらがな、漢字など</li>
+            </ul>
+        </div>
+
+        <!-- Slide 49 -->
+        <div class="slide">
+            <h2>トークナイゼーションの例</h2>
+            <div class="code-block">
+                <p>「私はAIを研究している。」</p>
+                <p style="margin-top: 12px;">↓ トークン化</p>
+                <p style="margin-top: 12px; color: #00ff88;">私 / は / AI / を / 研究 / して / いる / 。</p>
+            </div>
+            <p>モデルによってトークナイザー（分割方法）が異なる</p>
+        </div>
+
+        <!-- Slide 50 -->
+        <div class="slide">
+            <h2>未知の言葉もトークン化</h2>
+            <div class="box">
+                <p style="font-size: 1.2em;">「超次元宇宙猫キャンディ」</p>
+            </div>
+            <div class="code-block">
+                <p>超 / 次元 / 宇宙 / 猫 / キャンディ</p>
+            </div>
+            <p>AI：「超次元宇宙猫というキャラクターをテーマにしたキャンディの名称か？」</p>
+            <p style="margin-top: 12px;">→ 既存のトークンをもとに意味を「予想」</p>
+        </div>
+
+        <!-- Slide 51 -->
+        <div class="slide">
+            <h2>コンテキストウィンドウの限界</h2>
+            <div class="warning">
+                <h3>大きすぎると...</h3>
+                <ul>
+                    <li>計算コストが爆増</li>
+                    <li>ChatGPTはGoogle検索の10倍の電力を使用</li>
+                    <li>情報過多でトークンの関連付けに混乱</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 52 -->
+        <div class="slide">
+            <h2>Middle-Forgetting現象</h2>
+            <div class="box">
+                <p>コンテキストの<span class="highlight">最初と最後</span>を重視し、<br><span class="highlight">中間情報</span>を欠落させてしまう現象</p>
+            </div>
+            <p style="margin-top: 15px;">長いロープと短いロープを両端で揃えるイメージ</p>
+            <p>→ 中間を曲げたり絡めたりして省略される</p>
+        </div>
+
+        <!-- Slide 53 -->
+        <div class="slide">
+            <h2>FIFO方式と記憶の薄れ</h2>
+            <div class="box box-blue">
+                <h3>FIFO = 先入れ先出し方式</h3>
+                <p>古いトークン情報から自動削除</p>
+            </div>
+            <ul>
+                <li>ChatGPT, Geminiなど</li>
+                <li>Claudeなどは圧縮して保持（Context Compression）</li>
+            </ul>
+            <div class="warning">
+                <p>学校の先生が黒板を「消していい？」と言わずに勝手に消すイメージ</p>
+            </div>
+        </div>
+
+        <!-- Slide 54 -->
+        <div class="slide">
+            <h2>編集機能の活用</h2>
+            <div class="box box-green">
+                <p>意図通りに伝わっていなければ<br><span class="highlight">プロンプトを修正</span>する</p>
+            </div>
+            <div class="comparison">
+                <div style="background: rgba(233,69,96,0.15); border: 2px solid #e94560; padding: 20px; border-radius: 12px;">
+                    <h3>編集</h3>
+                    <p>前提の修正・ノイズ除去</p>
+                </div>
+                <div style="background: rgba(0,255,136,0.15); border: 2px solid #00ff88; padding: 20px; border-radius: 12px;">
+                    <h3>新規メッセージ</h3>
+                    <p>思考を進める・深める</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 55 -->
+        <div class="slide">
+            <h2>編集のリズム</h2>
+            <div class="box" style="text-align: center;">
+                <p style="font-size: 1.4em;">「良い答えが出るまで<span class="highlight">編集</span>」<br>↓<br>「進めるときは<span class="highlight">新規</span>」</p>
+            </div>
+            <p style="margin-top: 25px; text-align: center;">余計な情報処理を減らすためにも、編集機能を活用しよう！</p>
+        </div>
+
+        <!-- Slide 56 -->
+        <div class="slide">
+            <h2>なぜ冗長な答えが出るか？</h2>
+            <div class="box">
+                <p>確率的に「<span class="highlight">よくありそうな文章</span>」を生成</p>
+            </div>
+            <ul>
+                <li>意味を増やさない語を追加しても確率が下がらない</li>
+                <li>「簡略化」にインセンティブがない</li>
+                <li>似た単語どうしのLLM内での距離が近い</li>
+            </ul>
+        </div>
+
+        <!-- Slide 57 -->
+        <div class="slide">
+            <h2>冗長な表現の例</h2>
+            <div class="code-block">
+                <p>「推測して<span style="color: #ff5252;">予想</span>している」</p>
+                <p>「短く<span style="color: #ff5252;">端的</span>に」</p>
+            </div>
+            <p>→ 簡略化可能な重複表現</p>
+            <div class="box box-green">
+                <p style="font-size: 1.4em; text-align: center;">「生成されたものをそのまま使うな！」</p>
+            </div>
+        </div>
+
+        <!-- Slide 58 -->
+        <div class="slide">
+            <h2>情報削減 Phase 1 - グループ化</h2>
+            <p>似た内容をグループ化する</p>
+            <div class="code-block">
+                <p>「簡単に」 ≒ 「直感的に」</p>
+                <p>「分かりやすく」 ≒ 「理解しやすい」</p>
+                <p>「シンプルで」 ≒ 「複雑な手順を必要としません」</p>
+            </div>
+        </div>
+
+        <!-- Slide 59 -->
+        <div class="slide">
+            <h2>情報削減 Phase 2 - 削除・統合</h2>
+            <p>あってもなくても伝わるなら削除</p>
+            <div class="comparison">
+                <div class="before">
+                    <h3>Before</h3>
+                    <p>「操作方法はシンプルで、複雑な手順を必要としません」</p>
+                </div>
+                <div class="after">
+                    <h3>After</h3>
+                    <p>「操作方法は非常にシンプルです」</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 60: MW -->
+        <div class="slide">
+            <div class="mw-box">
+                <h3>MW④ ミニワークショップ</h3>
+                <h2>文章・スライド添削</h2>
+                <p style="color: #ddd;">15分間</p>
+            </div>
+            <ul>
+                <li>Gensparkで生成した資料を編集</li>
+                <li>余分な情報を削ぎ取る</li>
+                <li>統合・言い換えを実践</li>
+            </ul>
+        </div>
+
+        <!-- Slide 61: Section Title -->
+        <div class="slide section-title">
+            <span class="section-number">WS</span>
+            <h2>2日目ワークショップ</h2>
+            <p>6時間</p>
+        </div>
+
+        <!-- Slide 62 -->
+        <div class="slide">
+            <h2>ワークショップ概要</h2>
+            <div class="box">
+                <h3>テーマ</h3>
+                <p style="font-size: 1.4em;">自身の所属する会社の<span class="highlight">営業資料</span>を作成</p>
+            </div>
+            <h3>使用ツール</h3>
+            <ul>
+                <li>Genspark（プロンプト入力）</li>
+                <li>Gemini / Google NotebookLM</li>
+            </ul>
+        </div>
+
+        <!-- Slide 63 -->
+        <div class="slide">
+            <h2>ワークショップの流れ</h2>
+            <div class="flow-chart vertical-flow">
+                <div class="flow-item"><strong>1.</strong> TCREIを踏まえたプロンプト設計</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-item"><strong>2.</strong> 資料生成</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-item"><strong>3.</strong> 出力された資料の情報修正・削減</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-item"><strong>4.</strong> ファクトチェック</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-item"><strong>5.</strong> デザイン調整（画像生成スキル活用）</div>
+            </div>
+        </div>
+
+        <!-- Slide 64 -->
+        <div class="slide">
+            <h2>まとめ - 3つの力</h2>
+            <div class="grid-3">
+                <div style="border: 3px solid #e94560;">
+                    <span class="tcrei-box t-box">TCR</span>
+                    <h3>対話設計能力</h3>
+                    <p>構造化された指示</p>
+                </div>
+                <div style="border: 3px solid #00ff88;">
+                    <span class="tcrei-box e-box">E</span>
+                    <h3>品質管理能力</h3>
+                    <p>評価・検証</p>
+                </div>
+                <div style="border: 3px solid #ffd93d;">
+                    <span class="tcrei-box i-box">I</span>
+                    <h3>編集能力</h3>
+                    <p>反復・改善</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 65 -->
+        <div class="slide">
+            <h2>研修で得られるスキル</h2>
+            <ul>
+                <li>AIの出力に対する<strong>妥当性・品質の判断</strong></li>
+                <li>不足している観点の判断</li>
+                <li><strong>MECE性</strong>の確認</li>
+                <li><strong>事実と意見</strong>の区別</li>
+                <li>ハルシネーションの検出</li>
+                <li>効果的な編集・削減</li>
+            </ul>
+        </div>
+
+        <!-- Slide 66: Final -->
+        <div class="slide title-slide">
+            <h1>最後に</h1>
+            <div class="box" style="margin: 35px 0;">
+                <p style="font-size: 1.4em; text-align: center;">
+                    「AIに使われる」のではなく<br>
+                    <span class="highlight">「AIを監督/コントロール・編集する」</span>
+                </p>
+            </div>
+            <p>継続的な実践で習得</p>
+            <p>研修後も活用を！</p>
+        </div>
+
+        <!-- Slide 67: Appendix -->
+        <div class="slide">
+            <h2>付録A: Gemini vs ChatGPT 編集機能比較</h2>
+            <div class="comparison">
+                <div style="background: rgba(233,69,96,0.15); border: 2px solid #e94560; padding: 20px; border-radius: 12px;">
+                    <h3>ChatGPT</h3>
+                    <p>編集すると後続プロンプトもリセット</p>
+                    <p>→ 自分で再入力が必要</p>
+                </div>
+                <div style="background: rgba(0,217,255,0.15); border: 2px solid #00d9ff; padding: 20px; border-radius: 12px;">
+                    <h3>Gemini</h3>
+                    <p>最新入力のみ編集可能</p>
+                    <p>→ 前提は編集不可</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 68: Appendix -->
+        <div class="slide">
+            <h2>付録B: 参考リンク集</h2>
+            <ul>
+                <li>Google Prompt Engineering Course</li>
+                <li>TCREI詳細資料</li>
+                <li>コンテキストウィンドウ研究論文</li>
+                <li>ハルシネーション対策ガイド</li>
+            </ul>
+            <div class="box" style="margin-top: 35px; text-align: center;">
+                <p style="font-size: 1.4em;">ご清聴ありがとうございました</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav">
+        <button class="prev" onclick="prevSlide()">← 前へ</button>
+        <button class="next" onclick="nextSlide()">次へ →</button>
+    </div>
+
+    <script>
+        (function() {
+            var currentSlide = 1;
+            var slides = document.querySelectorAll('.slide');
+            var totalSlides = slides.length;
+
+            function showSlide(n) {
+                if (n > totalSlides) currentSlide = 1;
+                if (n < 1) currentSlide = totalSlides;
+
+                for (var i = 0; i < slides.length; i++) {
+                    slides[i].classList.remove('active');
+                }
+                slides[currentSlide - 1].classList.add('active');
+
+                var progress = (currentSlide / totalSlides) * 100;
+                document.getElementById('progress').style.width = progress + '%';
+                document.getElementById('slideNumber').textContent = currentSlide + ' / ' + totalSlides;
+            }
+
+            window.nextSlide = function() {
+                currentSlide++;
+                showSlide(currentSlide);
+            };
+
+            window.prevSlide = function() {
+                currentSlide--;
+                showSlide(currentSlide);
+            };
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+                    e.preventDefault();
+                    prevSlide();
+                } else if (e.key === 'Home') {
+                    currentSlide = 1;
+                    showSlide(currentSlide);
+                } else if (e.key === 'End') {
+                    currentSlide = totalSlides;
+                    showSlide(currentSlide);
+                }
+            });
+
+            var touchStartX = 0;
+            var touchEndX = 0;
+
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50) {
+                    nextSlide();
+                } else if (touchEndX - touchStartX > 50) {
+                    prevSlide();
+                }
+            }, false);
+
+            showSlide(currentSlide);
+        })();
+    </script>
+</body>
+</html>
